@@ -49,6 +49,7 @@ def start():
     # Create CSV file
     with open(filename, "w") as lol:
         pass
+
     #enter in data for each step
     startwindow = tk.Toplevel(window)
     steps = int(cyclesentry.get())
