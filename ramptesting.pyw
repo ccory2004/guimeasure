@@ -8,19 +8,23 @@ import numpy as np
 from time import sleep
 from datetime import datetime
 import matplotlib.pyplot as plt
-#On Click Start
-def start():
-    #enter in data for each step
-    startwindow = tk.Toplevel(window)
-    steps = int(cyclesentry.get())
-    cursteps = []
-    for i in range(steps):
-        startwindow = tk.Toplevel(window)
-        tk.Label(startwindow)
-        tk.Label(startwindow, text="COM Port: ").grid(column=0, row=1)
-        comentry = tk.Entry(window, width=15)
-        comentry.grid(column=1, row=1)
 
+#On click start from start helpWindow
+def testing():
+    curmeas = []
+    steps = int(cyclesentry.get())
+    for i in range(steps):
+        sm.ramp_to_current(float(curentry[i].get(), steps=3, pause=0.01)
+        data.append(sm.voltage)
+    with open(filename, "a", newline="") as dataset:
+        writer = csv.writer(dataset, delimiter=",")
+        writer.writerow(data)
+    sm.shutdown()
+    noteline.insert(0, "Test Complete! Data located in the file "+filename)
+
+
+#On Click Start from main menu
+def start():
     #Connect and configure the instrument
     adapter = VISAAdapter("ASRL"+comentry.get()+"::INSTR")
     sm = Keithley2400(adapter)
@@ -34,9 +38,7 @@ def start():
     sleep(0.1)
     window.mainloop()
 
-    #Set Input Params based upon user input
     sm.apply_current()
-    cycles = float(cyclesentry.get())
     standardcurrent = float(currententry.get())
     filename = csventry.get()
     sm.source_current_range = float(srcrngentry.get())
@@ -47,24 +49,19 @@ def start():
     # Create CSV file
     with open(filename, "w") as lol:
         pass
+    #enter in data for each step
+    startwindow = tk.Toplevel(window)
+    steps = int(cyclesentry.get())
+    curentry = []
+    for i in range(steps):
+        startwindow = tk.Toplevel(window)
+        tk.Label(startwindow)
+        tk.Label(startwindow, text="Current of step #"+str(i)": ").grid(column=0, row=i+1)
+        curentry[i] = tk.Entry(window, width=15)
+        curentry[i].grid(column=1, row=i+1)
+    testingbegin = tk.Button(startwindow, text="Start!", command=testing)
+    testingbegin.pack()
 
-    # Begin testing sequence
-    for i in range(int(cycles)):
-        data = []
-        mindata = []
-        sm.ramp_to_current(standardcurrent, steps=3, pause=0.01)
-        for j in range(curtime):
-            data.append(sm.voltage)
-            sleep(1)
-        sm.ramp_to_current(mincurrent, steps=3, pause=0.01)
-        data.append(sm.voltage)
-        sleep(mintime)
-        noteline.insert(0, "Cycle "+str(i+1)+" completed")
-        with open(filename, "a", newline="") as dataset:
-            writer = csv.writer(dataset, delimiter=",")
-            writer.writerow(data)
-    sm.shutdown()
-    noteline.insert(0, "Test Complete! Data located in the file "+filename)
 
 # Graphs of dataset
 def graph():
