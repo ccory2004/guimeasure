@@ -54,6 +54,7 @@ def start():
         with open(filename, "a", newline="") as dataset:
             writer = csv.writer(dataset, delimiter=",")
             writer.writerow(data)
+        sm.reset_buffer()
     sm.shutdown()
     noteline.insert(0, "Test Complete! Data located in the file "+filename)
 
