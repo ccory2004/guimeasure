@@ -1,6 +1,5 @@
 #Developed by Cory Chang
 #For the Keithley 2400 instrument, used for longer term LED cycle testing
-import tkinter as tk
 from pymeasure.instruments.keithley import Keithley2400
 from pymeasure.adapters import VISAAdapter
 import csv
