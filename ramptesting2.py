@@ -1,5 +1,6 @@
 #Developed by Cory Chang
 #For the Keithley 2400 instrument, used for longer term LED cycle testing
+import pyvisa
 from pymeasure.instruments.keithley import Keithley2400
 from pymeasure.adapters import VISAAdapter
 import csv
@@ -9,14 +10,14 @@ from datetime import datetime
 
 #Define variables for startup
 print("Ramp Testing Version 2")
-comPort = int(input("Enter the COM Port of the device: "))
-stepsNum = int(input("Enter the number of steps: "))
+comPort = input("Enter the COM Port of the device: ")
 stepCurr = []
 stepVolt = []
 srcCurrRng = float(input("Define the Source Current Range: "))
 cmplVolt = float(input("Define the Compliance Voltage: "))
+stepsNum = int(input("Enter the number of steps: "))
 for i in range(stepsNum):
-    stepCurr[i] = float(input("Enter the current for step #"+str(i)+": "))
+    stepCurr.append(float(input("Enter the current for step #"+str(i)+": ")))
 
 #Instantiate the device
 adapter = VISAAdapter("ASRL"+comPort+"::INSTR")
