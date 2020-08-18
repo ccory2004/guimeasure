@@ -48,6 +48,6 @@ for i in range(stepsNum):
     stepVolt.append(sm.voltage)
 with open(filename, "a", newline="") as dataset:
     writer = csv.writer(dataset, delimiter=",")
-    writer.writerow(data)
+    writer.writerow(stepVolt)
 sm.shutdown()
 print("Testing complete! Data located in the file "+filename)
