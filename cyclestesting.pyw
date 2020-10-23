@@ -48,13 +48,16 @@ def start():
             data.append(sm.voltage)
             sleep(1)
         sm.ramp_to_current(mincurrent, steps=3, pause=0.01)
-        data.append(sm.voltage)
+        mindata.append(sm.voltage)
         sleep(mintime)
         noteline.insert(0, "Cycle "+str(i+1)+" completed")
         with open(filename, "a", newline="") as dataset:
             writer = csv.writer(dataset, delimiter=",")
             writer.writerow(data)
         sm.reset_buffer()
+    with open(filename, "a", newline="") as dataset:
+        writer = csv.writer(dataset, delimiter=",")
+        writer.writerow(mindata)
     sm.shutdown()
     noteline.insert(0, "Test Complete! Data located in the file "+filename)
 
